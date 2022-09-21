@@ -1,0 +1,65 @@
+require('column')
+
+
+Table = {columns={}, column_width=30, total_rows=0}
+
+function Table:new (t)
+	t = t or {}
+	setmetatable(t, self)
+	self.__index = self
+	return t
+end
+
+-- addColumn('new_column_name', 10)
+function Table:addColumn (column_name, width)
+	width = witdh or self.column_width
+	new_column = Column:new {name=column_name, width=width}
+	table.insert(self.columns, new_column)
+end
+
+-- addRows('text in the 1 column', 'text in the 2 column')
+function Table:addRows (...)
+	string_for_columns = {...}
+	for _ = 1,(#string_for_columns - #self.columns) do
+		table.insert(string_for_columns, "")
+	end
+	for index_column, column in ipairs(self.columns) do
+		column:addRow (string_for_columns[index_column])
+	end
+end
+	
+
+print('--------')
+t = Table:new {}
+t:addColumn ('test', 10)
+t:addColumn ('test', 10)
+for _, c in ipairs(t.columns) do
+	print(c.name)
+end
+t:addRows ('23321', '123456789101112')
+--[[
+function pri (...) 
+	local arg = {...}
+	local result = ""
+	for i,v in ipairs(arg) do
+		result = result .. tostring(v) .. " "
+	end
+	return result
+end
+print(pri('213213', 'fewf', '12dw'))
+
+test = {columns={}}
+for i=1,10 do
+	column = Column:new{name=i}
+	table.insert(test['columns'], column)
+end
+
+for i, v in ipairs(test['columns']) do
+	print(v.name)
+end
+--]]
+
+
+--print(' ┏━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓')
+
+
